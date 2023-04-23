@@ -14,12 +14,12 @@ const createEmployee = async (req, res) => {
 
         const exitEmail = await EmployeeModel.findOne({ email })
         if (exitEmail?.email) {
-            return res.status(403).json({ message: 'Employee already exist with given email!' })
+            return res.status(403).json({ status: 403, message: 'Employee already exist with given email!' })
         }
 
         const exitUserName = await EmployeeModel.findOne({ user_name })
         if (exitUserName?.user_name) {
-            return res.status(403).json({ message: 'Employee already exist with given user name!' })
+            return res.status(403).json({ status: 403, message: 'Employee already exist with given user name!' })
         }
 
         const employee = new EmployeeModel({
@@ -32,9 +32,9 @@ const createEmployee = async (req, res) => {
 
         const newEmployee = await employee.save()
 
-        return res.status(200).json({ data: newEmployee, message: "New employee created successfully." })
+        return res.status(200).json({ status: 200, data: newEmployee, message: "New employee created successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 
@@ -45,9 +45,9 @@ const getEmployee = async (req, res) => {
             .lean()
             .exec()
 
-        return res.status(200).json({ data: employee, message: "Employee's details got successfully." })
+        return res.status(200).json({ status: 200, data: employee, message: "Employee's details got successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 
@@ -61,9 +61,9 @@ const getSingleEmployee = async (req, res) => {
             .lean()
             .exec()
 
-        return res.status(200).json({ data: employee, message: "Employee details got successfully." })
+        return res.status(200).json({ status: 200, data: employee, message: "Employee details got successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 

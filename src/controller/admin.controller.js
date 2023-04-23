@@ -29,9 +29,9 @@ const login = async (req, res) => {
             process.env.JWT_SECRET_KEY
         );
 
-        return res.status(200).json({ data: userObj, token: token, message: "You have logged-in successfully." })
+        return res.status(200).json({ status: 200, data: userObj, token: token, message: "You have logged-in successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 
@@ -54,9 +54,9 @@ const createAdmin = async (req, res) => {
 
         const newAdmin = await admin.save()
 
-        return res.status(200).json({ data: newAdmin, message: "Admin created successfully." })
+        return res.status(200).json({ status: 200, data: newAdmin, message: "Admin created successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 

@@ -8,7 +8,7 @@ const applyLeave = async (req, res) => {
     try {
         let validator = mandatoryField(req.body, ['emp_id', 'leave_type', 'leave_start_date', 'leave_end_date']);
         if (validator.length > 0) {
-            return res.status(404).json({ message: `${JSON.stringify(validator)} are mandatory field` })
+            return res.status(404).json({ status: 404, message: `${JSON.stringify(validator)} are mandatory field` })
         }
 
         const { emp_id, leave_type, leave_start_date, leave_end_date } = req.body
@@ -17,9 +17,7 @@ const applyLeave = async (req, res) => {
         const end_date = moment(leave_end_date);
 
 
-        // const leave_applied_days = start_date.diff(end_date, 'days')
-
-        const leave_applied_days = 2
+        const leave_applied_days = end_date.diff(start_date, 'days')
 
         const aviableSickLeaves = await EmployeeModel.findById(mongoose.Types.ObjectId(emp_id))
             .select('sick_leave_available')
@@ -28,7 +26,7 @@ const applyLeave = async (req, res) => {
 
         if (leave_type == 'sick_leave') {
             if (leave_applied_days > aviableSickLeaves?.sick_leave_available) {
-                return res.status(404).json({ message: `You don't have given leave available, you requested for. you have only ${aviableSickLeaves?.sick_leave_available} leave available. ` })
+                return res.status(404).json({ status: 404, message: `You don't have given leave available, you requested for. you have only ${aviableSickLeaves?.sick_leave_available} leave available. ` })
             }
         }
 
@@ -39,7 +37,7 @@ const applyLeave = async (req, res) => {
 
         if (leave_type == 'casual_leave') {
             if (leave_applied_days > aviableCasualLeaves?.casual_leave_available) {
-                return res.status(404).json({ message: `You don't have given leave available, you requested for. you have only ${aviableSickLeaves?.sick_leave_available} leave available. ` })
+                return res.status(404).json({ status: 404, message: `You don't have given leave available, you requested for. you have only ${aviableSickLeaves?.sick_leave_available} leave available. ` })
             }
         }
 
@@ -57,22 +55,22 @@ const applyLeave = async (req, res) => {
         if (leaveApplied) {
 
             if (leave_type == 'sick_leave') {
-                const empLeaveUpdate = await EmployeeModel.findOneAndUpdate(mongoose.Types.ObjectId(emp_id),
+                await EmployeeModel.findOneAndUpdate(mongoose.Types.ObjectId(emp_id),
                     { $inc: { sick_leave_available: -leave_applied_days } })
                     .lean()
                     .exec()
             }
             else if (leave_type == 'casual_leave') {
-                const empLeaveUpdate = await EmployeeModel.findOneAndUpdate(mongoose.Types.ObjectId(emp_id),
+                await EmployeeModel.findOneAndUpdate(mongoose.Types.ObjectId(emp_id),
                     { $inc: { quantity: -leave_applied_days } })
                     .lean()
                     .exec()
             }
         }
 
-        return res.status(200).json({ data: leaveApplied, message: "You have Appied successfully." })
+        return res.status(200).json({ status: 200, data: leaveApplied, message: "You have Appied successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 
@@ -86,9 +84,9 @@ const getLeave = async (req, res) => {
             .lean()
             .exec()
 
-        return res.status(200).json({ data: leaveApplied, message: "Leave's data got successfully." })
+        return res.status(200).json({ status: 200, data: leaveApplied, message: "Leave's data got successfully." })
     } catch (error) {
-        return res.status(500).json({ error: error, message: error?.message })
+        return res.status(500).json({ status: 500, error: error, message: error?.message })
     }
 }
 
