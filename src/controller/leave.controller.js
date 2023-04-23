@@ -62,7 +62,7 @@ const applyLeave = async (req, res) => {
             }
             else if (leave_type == 'casual_leave') {
                 await EmployeeModel.findOneAndUpdate(mongoose.Types.ObjectId(emp_id),
-                    { $inc: { quantity: -leave_applied_days } })
+                    { $inc: { casual_leave_available: -leave_applied_days } })
                     .lean()
                     .exec()
             }
