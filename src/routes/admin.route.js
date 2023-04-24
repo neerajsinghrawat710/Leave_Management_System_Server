@@ -5,6 +5,6 @@ const router = express.Router()
 router.post("/login", login)
 
 // create admin ----------test 
-// router.post("/create-admin", createAdmin)
+router.post("/create-admin", createAdmin)
 
 module.exports = router

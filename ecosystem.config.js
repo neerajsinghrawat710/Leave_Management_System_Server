@@ -2,7 +2,7 @@
 const dev = {
   "APP_PORT": 4000,
   "NODE_ENV": "dev",
-  "MONGO_URL": "mongodb://localhost:27017/leave_management_system",
+  "MONGO_URL": "mongodb+srv://neerajsinghrawat710:V1O7gEnvBTQWQ7Mm@cluster0.fbqkbgw.mongodb.net/test",
   "JWT_SECRET_KEY": "12@#45_4345Feeic##%@$$$_$536335",
   "SALT": 10,
 };
